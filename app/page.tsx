@@ -1,12 +1,11 @@
 "use client"; 
-import { useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import { Forecast, Day, Alert, Station } from "./types";
 
 export default function Home() {
   const [forecast, setForecast] = useState<Forecast>();
-  const [currentForecast, setCurrentForecast] = useState<Day>();
   const [days, setDays] = useState<Day[]>([]);
-  const [currentDay, setCurrentDay] = useState<String>();
+  const [searchQuery, setSearchQuery] = useState('');
 
    useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +19,6 @@ export default function Home() {
         })
         .then(data => {
           if(data){
-            setCurrentForecast(data.currentConditions);
             setDays(data.days);
             setForecast(data)
             console.log('Data: ', data)
@@ -46,18 +44,56 @@ export default function Home() {
     const dayIndex = today.getDay(); 
     return days[dayIndex]; 
   };
+
+ const handleSearchInput = (event: { target: { value: SetStateAction<string>; }; }) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchClick = async () => {
+    if (searchQuery.trim() !== '') {
+      try {
+        const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${searchQuery}?key=9TA4WZGMLKBDSN2HQZYCHAGJ3`);
+
+        if (!response.ok) {
+          throw new Error('API request failed');
+        }
+        const data = await response.json();
+        setDays(data.days);
+        setForecast(data)
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    }
+  };
+
+  const handleKeyDown = (event: { key: string; preventDefault: () => void; }) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSearchClick();
+    }
+  };
   
-  
-  useEffect(() => {
-    setCurrentDay(getDayNameFromDate(''));
-  }, [forecast]);
-  
+
   return (
     <main className="main-container flex flex-col items-center justify-between p-4">
       <div className="p-4">
         <h1 className="font-bold text-lg capitalize text-center">Weather or not</h1>
         <h2 className="font-bold text-md text-center">Location: {forecast?.resolvedAddress}</h2>
-      </div>
+
+        {/* Search bar */}
+        <div className="search-container flex">
+          <input className="search-bar" 
+            type="search" 
+            placeholder="Search for location..." 
+            value={searchQuery} 
+            onChange={handleSearchInput}
+            onKeyDown={handleKeyDown} />
+          <button 
+            className="search-button" 
+            onClick={handleSearchClick}>Search</button>      
+          </div>
+        </div>
+
       <div className="h-96 grid grid-columns-5 sm:grid-flow-col sm:grid-flow-row gap-2 container">
         {/* Next 7 day Forecast */}
         {days.slice(0,7).map((day, index) => (

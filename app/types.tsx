@@ -31,4 +31,3 @@ export interface Forecast {
     description: string;
     stations: Station[];
 }
-  
