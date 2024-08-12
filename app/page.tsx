@@ -58,43 +58,53 @@ export default function Home() {
         <h1 className="font-bold text-lg capitalize text-center">Weather or not</h1>
         <h2 className="font-bold text-md text-center">Location: {forecast?.resolvedAddress}</h2>
       </div>
-      <div className="h-96 grid grid-columns-5 sm:grid-flow-col sm:grid-flow-row
-      gap-2 container">
-        {/* Current Forecast */}
-            {/* <div className="weather-container p-4">
-                  <div className="title text-center uppercase font-bold my-4 my-px">
-                    <div>{currentDay}</div>
-                    <div className="italic text-sm capitalize">(Current)</div>
-                  </div>
-                  <div className="text-center italic font-bold text-sm">
-                    <div>{currentForecast?.conditions}</div>
-                    <div>Temp: {currentForecast?.temp}</div>
-                    <div>Feels like: {currentForecast?.feelslike}</div>
-                    <div>Dew point:{currentForecast?.dew}</div>
-                  </div>
-            </div> */}
-
-          {/* Next 6 day Forecast */}
-            {/* Next 6 day Forecast */}
-            {days.slice(0,7).map((day, index) => (
-            <div key={index} className="weather-container p-4">
-              <div className="title text-center uppercase font-bold my-4 my-px">
-                {getDayNameFromDate(day?.datetime)}
-              </div>
-              <div className="text-center text-sm">{day?.datetime}</div>
-              <div className="text-center italic font-bold text-sm pt-4">
-                <div className="pb-2">{day.conditions}</div>
-                <img className={day?.icon + " weather-icon"}></img>
-              </div>
-              <div className="p-2 pt-6">
+      <div className="h-96 grid grid-columns-5 sm:grid-flow-col sm:grid-flow-row gap-2 container">
+        {/* Next 7 day Forecast */}
+        {days.slice(0,7).map((day, index) => (
+          <div key={index} className="weather-container p-4">
+            <div className="title text-center uppercase font-bold my-4 my-px">
+              {getDayNameFromDate(day?.datetime)}
+            </div>
+            <div className="text-center text-sm">{day?.datetime}</div>
+            <div className="text-center italic font-bold text-sm pt-4">
+              <div className="pb-2">{day.conditions}</div>
+              <div className={day?.icon + " weather-icon"}></div>
+            </div>
+            {/* Temp info */}
+            <div className="pt-4 pb-4">
+              <div className="uppercase font-bold text-center">Temperature</div>
+              <div className="pt-2">
                 <div>High: {day?.tempmin} F</div>
                 <div>Low: {day?.tempmax} F</div>
                 <div>Feels like: {day.feelslike} F</div>
                 <div>Dew Point: {day.dew}</div>
+                <div>Wind Gust: {day.windgust}</div>
+                <div>Snow: {day.snow}%</div>
               </div>
             </div>
-          ))}
-        </div>
+            
+            {/* Sun info */}
+            <div className="pt-4 pb-4">
+              <div className="uppercase font-bold text-center">Sun info</div>
+              <div className="pt-2">
+                <div>Sunrise: {day.sunrise}</div>
+                <div>Sunset: {day.sunset}</div>              
+                <div>UV Index: {day.uvindex}</div>
+              </div>
+            </div>
+
+            {/* Moon Cycle Info */}
+            <div className="pt-4 pb-4">
+              <div className="uppercase font-bold text-center">Moon Cycle</div>
+                <div>
+                  <div>Moon phase: {day.moonphase}</div>
+                  <div>Visibility: {day.visability}</div>              
+                  <div>UV Index: {day.uvindex}</div>
+                </div>
+              </div>
+            </div>
+        ))}
+      </div>
     </main>
   );
 }
