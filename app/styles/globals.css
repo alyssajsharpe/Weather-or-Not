@@ -2,3 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+.weather-icon {height: 64px; width: 64px; border: none; margin: auto;}
+
+
+/* Icons from https://github.com/visualcrossing/WeatherIcons/tree/main */
+.clear-day{background: url('../../public/weather-icons/clear-day.png');}
+.clear-night{background: url('../../public/weather-icons/clear-night.png');}
+.cloudy{background: url('../../public/weather-icons/cloudy.png');}
+.fog{background: url('../../public/weather-icons/fog.png');}
+.hail{background: url('../../public/weather-icons/hail.png');}
+.partly-cloudy-day{background: url('../../public/weather-icons/partly-cloudy-day.png');}
+.partly-cloudy-night{background: url('../../public/weather-icons/partly-cloudy-night.png');}
+.rain-snow-showers-day{background: url('../../public/weather-icons/rain-snow-showers-day.png');}
+.rain-snow-showers-night{background: url('../../public/weather-icons/rain-snow-showers-night.png');}
+.rain-snow{background: url('../../public/weather-icons/rain-snow.png');}
+.rain{background: url('../../public/weather-icons/rain.png');}
+.showers-day{background: url('../../public/weather-icons/showers-day.png');}
+.showers-night{background: url('../../public/weather-icons/showers-night.png');}
+.sleet{background: url('../../public/weather-icons/sleet.png');}
+.snow-showers-day{background: url('../../public/weather-icons/snow-showers-day.png');}
+.snow-showers-night{background: url('../../public/weather-icons/snow-showers-night.png');}
+.snow{background: url('../../public/weather-icons/snow.png');}
+.thunder-rain{background: url('../../public/weather-icons/thunder-rain.png');}
+.thunder-showers-day{background: url('../../public/weather-icons/thunder-showers-day.png');}
+.thunder-showers-night{background: url('../../public/weather-icons/thunder-showers-night.png');}
+.thunder{background: url('../../public/weather-icons/thunder.png');}
+.wind{background: url('../../public/weather-icons/wind.png');}
+

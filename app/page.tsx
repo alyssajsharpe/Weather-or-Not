@@ -35,15 +35,8 @@ export default function Home() {
 
   }, []);
 
-  function getCurrentDay () {
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const today = new Date();
-      const dayIndex = today.getDay();
-      return days[dayIndex]; // return the name of the current day
-  }
-
-  const getCurrentDayForOtherDays = (dateString: string | number | Date) => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const getDayNameFromDate = (dateString: string | number | Date) => {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     let today;
     if(dateString == '') {
       today = new Date();
@@ -56,7 +49,7 @@ export default function Home() {
   
   
   useEffect(() => {
-    setCurrentDay(getCurrentDayForOtherDays(''));
+    setCurrentDay(getDayNameFromDate(''));
   }, [forecast]);
   
   return (
@@ -68,7 +61,7 @@ export default function Home() {
       <div className="h-96 grid grid-columns-5 sm:grid-flow-col sm:grid-flow-row
       gap-2 container">
         {/* Current Forecast */}
-            <div className="weather-container p-4">
+            {/* <div className="weather-container p-4">
                   <div className="title text-center uppercase font-bold my-4 my-px">
                     <div>{currentDay}</div>
                     <div className="italic text-sm capitalize">(Current)</div>
@@ -79,18 +72,24 @@ export default function Home() {
                     <div>Feels like: {currentForecast?.feelslike}</div>
                     <div>Dew point:{currentForecast?.dew}</div>
                   </div>
-            </div>
+            </div> */}
 
           {/* Next 6 day Forecast */}
-          {days.slice(1,7).map((day, index) => (
+            {/* Next 6 day Forecast */}
+            {days.slice(0,7).map((day, index) => (
             <div key={index} className="weather-container p-4">
               <div className="title text-center uppercase font-bold my-4 my-px">
-                {getCurrentDayForOtherDays(day?.datetime)}
+                {getDayNameFromDate(day?.datetime)}
               </div>
-              <div className="text-center italic font-bold text-sm">
-                <div>{day.conditions}</div>
-                <div>Temp: {day.temp}</div>
-                <div>Feels like: {day.feelslike}</div>
+              <div className="text-center text-sm">{day?.datetime}</div>
+              <div className="text-center italic font-bold text-sm pt-4">
+                <div className="pb-2">{day.conditions}</div>
+                <img className={day?.icon + " weather-icon"}></img>
+              </div>
+              <div className="p-2 pt-6">
+                <div>High: {day?.tempmin} F</div>
+                <div>Low: {day?.tempmax} F</div>
+                <div>Feels like: {day.feelslike} F</div>
                 <div>Dew Point: {day.dew}</div>
               </div>
             </div>

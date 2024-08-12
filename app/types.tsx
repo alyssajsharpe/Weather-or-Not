@@ -3,9 +3,9 @@ export interface Day {
     conditions: string;
     temp: number;
     feelslike: number;
-    maxTemp: number;
+    tempmax: number;
     feelslikemax: number;
-    minTemp: number;
+    tempmin: number;
     feelslikemin: number;
     uvindex: number;
     visability: number;
@@ -15,6 +15,7 @@ export interface Day {
     sunset: string;
     snow: number;
     moonphase: number;
+    icon: string;
   }
   
 export interface Alert {}
