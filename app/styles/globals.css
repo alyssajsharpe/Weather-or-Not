@@ -5,7 +5,7 @@
 .weather-icon {height: 64px; width: 64px; margin: auto;}
 .category-icon {height: 64px; width: 64px; margin: auto; scale:calc(.5);}
 .temp-icon {height: 48px; width: 48px; margin: auto; scale:calc(.75);}
-
+.alert-icon {height: 48px; width: 48px; scale:calc(.75);}
 
 /* Icons from https://github.com/visualcrossing/WeatherIcons/tree/main */
 .clear-day{background: url('../../public/weather-icons/clear-day.png');}
@@ -31,5 +31,7 @@
 .thunder{background: url('../../public/weather-icons/thunder.png');}
 .wind{background: url('../../public/weather-icons/wind.png');}
 .temperature{background: url('../../public/weather-icons/temperature.png');}
+
+.alert-icon {background: url('../../public/weather-icons/alert.png');}
 
 

@@ -1,16 +1,22 @@
 "use client"; 
 import { SetStateAction, useEffect, useState } from "react"
-import { Forecast, Day, Alert, Station } from "./types";
+import { Forecast, Day, Alerts, Stations } from "./types";
+import MapComponent from "./components/MapComponent";
 
 export default function Home() {
   const [forecast, setForecast] = useState<Forecast>();
   const [days, setDays] = useState<Day[]>([]);
+  const [alerts, setAlerts] = useState<Alerts[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [stations, setStations] = useState<Stations[]>([]);
+  const weatherDataApiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
    useEffect(() => {
     const fetchData = async () => {
+      console.log(weatherDataApiKey);
+
       try {
-        fetch('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Portland,OR?key=9TA4WZGMLKBDSN2HQZYCHAGJ3')
+        fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Portland,OR?key=${weatherDataApiKey}`)
         .then(response => {
           if(!response.ok){
             throw new Error('Error fetching API request.')
@@ -20,7 +26,9 @@ export default function Home() {
         .then(data => {
           if(data){
             setDays(data.days);
-            setForecast(data)
+            setForecast(data);
+            setStations(data.stations);
+            setAlerts(data.alerts);
             console.log('Data: ', data)
           }
         })
@@ -52,14 +60,16 @@ export default function Home() {
   const handleSearchClick = async () => {
     if (searchQuery.trim() !== '') {
       try {
-        const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${searchQuery}?key=9TA4WZGMLKBDSN2HQZYCHAGJ3`);
+        const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${searchQuery}?key=${weatherDataApiKey}`);
 
         if (!response.ok) {
           throw new Error('API request failed');
         }
         const data = await response.json();
         setDays(data.days);
-        setForecast(data)
+        setForecast(data);
+        setStations(data.stations);
+        setAlerts(data.alerts);
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
@@ -94,6 +104,15 @@ export default function Home() {
           </div>
         </div>
 
+      {/* Adding Weather Alerts */}
+        {alerts.map((alert, index) => (
+          <div key={index} className="alert-container container mx-auto m-auto p-2">
+              <div className="flex justify-center">
+                <div className="alert-icon"></div>
+                <div className="my-auto">{alert.headline}</div>
+              </div>
+          </div>
+        ))}
       <div className="h-96 grid grid-columns-5 sm:grid-flow-col sm:grid-flow-row gap-2 container">
         {/* Next 7 day Forecast */}
         {days.slice(0,7).map((day, index) => (
@@ -141,6 +160,8 @@ export default function Home() {
             </div>
         ))}
       </div>
+
+      {/* <MapComponent stations={stations}/> */}
     </main>
   );
 }

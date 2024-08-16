@@ -18,16 +18,28 @@ export interface Day {
     icon: string;
   }
   
-export interface Alert {}
+export interface Alerts {
+  description: string;
+  ends: string;
+  event: string;
+  headline: string;
+  onset: string;
+}
 
-export interface Station {}
+export interface Stations {
+  id: string;
+  latitude: number;
+  longitude: number;
+  name: string;
+  distance: number;
+}
 
 export interface Forecast {
     resolvedAddress: string;
     timezone: string;
     latitude: number;
     longitude: number;
-    alerts: Alert[];
+    alerts: Alerts[];
     description: string;
-    stations: Station[];
+    stations: Stations[];
 }
