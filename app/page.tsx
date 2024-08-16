@@ -64,8 +64,7 @@ export default function Home() {
       stationName.textContent = station.name;
 
       const stationInfo = document.createElement('div');
-      stationInfo.textContent = `Name: ${station.name}, '\n' Lat: ${station.latitude}, Long: ${station.longitude}`
-      stationInfo.className = 'station-info';
+      stationInfo.innerHTML = `Station name: ${station.name}` + '<br>' + `Latitude: ${station.latitude}` + '<br>' + `Longitude: ${station.longitude}`;      stationInfo.className = 'station-info';
  
       const marker = new AdvancedMarkerElement({
         map: map,
@@ -157,10 +156,10 @@ export default function Home() {
               </div>
           </div>
         ))}
-      <div className="h-96 grid grid-columns-5 sm:grid-flow-col sm:grid-flow-row gap-2 container">
+      <div className="h-96 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-7 place-items-stretch gap-2 container h-full">
         {/* Next 7 day Forecast */}
         {days.slice(0,7).map((day, index) => (
-          <div key={index} className="weather-container p-4">
+          <div key={index} className="weather-container dynamic-padding">
             <div className="title text-center uppercase font-bold my-4 my-px">
               {getDayNameFromDate(day?.datetime)}
             </div>
@@ -204,7 +203,7 @@ export default function Home() {
             </div>
         ))}
       </div>
-      <div className="container pt-80">
+      <div className="container pt-4">
           <div className="text-lg capitalize text-center pb-2">Weather Stations around {forecast?.resolvedAddress}</div>
           <div id="map" style={{ width: '100%', height: '500px' }}></div>
       </div>
