@@ -1,7 +1,8 @@
 "use client"; 
 import { SetStateAction, useEffect, useState } from "react"
 import { Forecast, Day, Alerts, Stations } from "./types";
-import MapComponent from "./components/MapComponent";
+import dynamic from 'next/dynamic';
+
 
 export default function Home() {
   const [forecast, setForecast] = useState<Forecast>();
@@ -9,12 +10,12 @@ export default function Home() {
   const [alerts, setAlerts] = useState<Alerts[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [stations, setStations] = useState<Stations[]>([]);
+
   const weatherDataApiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+  let map: google.maps.Map;
 
    useEffect(() => {
     const fetchData = async () => {
-      console.log(weatherDataApiKey);
-
       try {
         fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Portland,OR?key=${weatherDataApiKey}`)
         .then(response => {
@@ -29,7 +30,7 @@ export default function Home() {
             setForecast(data);
             setStations(data.stations);
             setAlerts(data.alerts);
-            console.log('Data: ', data)
+            initMap(data.stations, data.latitude, data.longitude);
           }
         })
       } catch (e) {
@@ -38,8 +39,50 @@ export default function Home() {
     };
 
     fetchData();
-
   }, []);
+
+  async function initMap(stations : Stations[], locationLat :string, locationLong :string): Promise<void> {
+    //@ts-ignore
+    const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+    var infoWindow = new google.maps.InfoWindow();
+   
+   
+    // Create new map centered at main location area
+    map = new Map(
+      document.getElementById('map') as HTMLElement,
+      {
+        zoom: 10,
+        center: {lat: Number(locationLat), lng: Number(locationLong)},
+        mapId: '3f8fe927d450854f',
+      }
+    );
+    // Display stations as markers on map
+    Object.entries(stations).map(([key, station], index)  => {
+      const stationName = document.createElement('div');
+      stationName.className = 'station-map-icon';
+      stationName.textContent = station.name;
+
+      const stationInfo = document.createElement('div');
+      stationInfo.textContent = `Name: ${station.name}, '\n' Lat: ${station.latitude}, Long: ${station.longitude}`
+      stationInfo.className = 'station-info';
+ 
+      const marker = new AdvancedMarkerElement({
+        map: map,
+        position: {lat: station.latitude, lng: station.longitude},
+        title: `${station.name}`,
+        content: stationName,
+      });
+
+
+      marker.addListener('click', function() {
+        infoWindow.setContent(stationInfo)
+        infoWindow.open(map, marker);
+      });
+      
+    });
+
+  } 
 
   const getDayNameFromDate = (dateString: string | number | Date) => {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -70,6 +113,8 @@ export default function Home() {
         setForecast(data);
         setStations(data.stations);
         setAlerts(data.alerts);
+        initMap(data.stations, data.latitude, data.longitude);
+
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
@@ -83,7 +128,6 @@ export default function Home() {
     }
   };
   
-
   return (
     <main className="main-container flex flex-col items-center justify-between p-4">
       <div className="p-4">
@@ -129,8 +173,8 @@ export default function Home() {
             <div className="pt-4 pb-4">
               <div className="uppercase font-bold text-center">Temperature</div>
               <div className="pt-2">
-                <div>High: {day?.tempmin} F</div>
-                <div>Low: {day?.tempmax} F</div>
+                <div>High: {day?.tempmax} F</div>
+                <div>Low: {day?.tempmin} F</div>
                 <div>Feels like: {day.feelslike} F</div>
                 <div>Dew Point: {day.dew}</div>
                 <div>Wind Gust: {day.windgust}</div>
@@ -160,8 +204,12 @@ export default function Home() {
             </div>
         ))}
       </div>
+      <div className="container pt-80">
+          <div className="text-lg capitalize text-center pb-2">Weather Stations around {forecast?.resolvedAddress}</div>
+          <div id="map" style={{ width: '100%', height: '500px' }}></div>
+      </div>
 
-      {/* <MapComponent stations={stations}/> */}
+      <div className="text-center footer-text">Weather or Not v1.0.1</div>
     </main>
   );
 }
