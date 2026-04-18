@@ -1,8 +1,6 @@
 "use client"; 
 import { SetStateAction, useEffect, useState } from "react"
 import { Forecast, Day, Alerts, Stations } from "./types";
-import dynamic from 'next/dynamic';
-
 
 export default function Home() {
   const [forecast, setForecast] = useState<Forecast>();
