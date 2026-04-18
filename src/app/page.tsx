@@ -126,7 +126,7 @@ export default function Home() {
   };
   
   return (
-    <main className="main-container flex flex-col items-center justify-between p-4">
+    <main className="main-container flex flex-col items-center justify-center p-4">
       <div className="p-4">
         <h1 className="font-bold text-lg capitalize text-center">Weather or not</h1>
         <h2 className="font-bold text-md text-center">Location: {forecast?.resolvedAddress}</h2>
@@ -154,10 +154,10 @@ export default function Home() {
               </div>
           </div>
         ))}
-      <div className="h-96 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-7 place-items-stretch gap-2 container h-full">
+      <div className="h-96 grid gap-4 sm:grid-cols-3 lg:grid-cols-4 gap-2 container h-full">
         {/* Next 7 day Forecast */}
         {days.slice(0,7).map((day, index) => (
-          <div key={index} className="weather-container dynamic-padding">
+          <div key={index} className="weather-container dynamic-padding ">
             <div className="title text-center uppercase font-bold my-4 my-px">
               {getDayNameFromDate(day?.datetime)}
             </div>
@@ -170,12 +170,12 @@ export default function Home() {
             <div className="pt-4 pb-4">
               <div className="uppercase font-bold text-center">Temperature</div>
               <div className="pt-2">
-                <div>High: {day?.tempmax} F</div>
-                <div>Low: {day?.tempmin} F</div>
-                <div>Feels like: {day.feelslike} F</div>
-                <div>Dew Point: {day.dew}</div>
-                <div>Wind Gust: {day.windgust}</div>
-                <div>Snow: {day.snow}%</div>
+                <div className="text-center">High: {day?.tempmax} F</div>
+                <div className="text-center">Low: {day?.tempmin} F</div>
+                <div className="text-center">Feels like: {day.feelslike} F</div>
+                <div className="text-center">Dew Point: {day.dew}</div>
+                <div className="text-center">Wind Gust: {day.windgust}</div>
+                <div className="text-center">Snow: {day.snow}%</div>
               </div>
             </div>
             
@@ -183,9 +183,9 @@ export default function Home() {
             <div className="pt-4 pb-4">
               <div className="uppercase font-bold text-center">Sun info</div>
               <div className="pt-2">
-                <div>Sunrise: {day.sunrise}</div>
-                <div>Sunset: {day.sunset}</div>              
-                <div>UV Index: {day.uvindex}</div>
+                <div className="text-center">Sunrise: {day.sunrise}</div>
+                <div className="text-center">Sunset: {day.sunset}</div>              
+                <div className="text-center">UV Index: {day.uvindex}</div>
               </div>
             </div>
 
@@ -193,9 +193,9 @@ export default function Home() {
             <div className="pt-4 pb-4">
               <div className="uppercase font-bold text-center">Moon Cycle</div>
                 <div>
-                  <div>Moon phase: {day.moonphase}</div>
-                  <div>Visibility: {day.visability}</div>              
-                  <div>UV Index: {day.uvindex}</div>
+                  <div className="text-center">Moon phase: {day.moonphase}</div>
+                  <div className="text-center">Visibility: {day.visability}</div>              
+                  <div className="text-center">UV Index: {day.uvindex}</div>
                 </div>
               </div>
             </div>
